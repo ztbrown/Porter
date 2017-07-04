@@ -14,6 +14,7 @@ void mock_on(mock_t *mock);
 void mock_off(mock_t *mock);
 int mock_is_enabled(mock_t *mock);
 int mock_get_call_count(mock_t *mock);
+void mock_reset_call_count(mock_t *mock);
 void mock_increment_call_count(mock_t *mock);
 void mock_set_return_value(mock_t *mock, void *value);
 void *mock_get_return_value(mock_t *mock);

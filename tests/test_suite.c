@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #include "daemonize_test.h"
+#include "create_socket_test.h"
 
 int main()
 {
@@ -9,6 +10,7 @@ int main()
     SRunner *sr;
 
     sr = srunner_create(make_daemonize_test_suite());
+    srunner_add_suite(sr, make_create_socket_test_suite());
 
     srunner_run_all(sr, CK_NORMAL);
 

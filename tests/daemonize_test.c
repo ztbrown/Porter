@@ -13,13 +13,13 @@ SIMULACRUM(int, setsid, 0)
 SIMULACRUM(int, chdir, 1, char*)
 
 // Set up argument captor
-int exit_arg_capture;
-void exit_callback(int status)
+static int exit_arg_capture;
+static void exit_callback(int status)
 {
     exit_arg_capture = status;
 }
 
-void setup()
+static void setup()
 {
     int defrtn = 0;
     mock_set_return_value(&getppid_mock, &defrtn);
@@ -29,7 +29,7 @@ void setup()
     mock_set_return_value(&exit_mock, &defrtn);
 }
 
-void teardown()
+static void teardown()
 {
     mock_reset_call_count(&fork_mock);
     mock_reset_call_count(&getppid_mock);

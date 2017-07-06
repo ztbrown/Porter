@@ -3,6 +3,7 @@
 
 #include "daemonize_test.h"
 #include "create_socket_test.h"
+#include "bind_socket_test.h"
 
 int main()
 {
@@ -11,6 +12,7 @@ int main()
 
     sr = srunner_create(make_daemonize_test_suite());
     srunner_add_suite(sr, make_create_socket_test_suite());
+    srunner_add_suite(sr, make_bind_socket_test_suite());
 
     srunner_run_all(sr, CK_NORMAL);
 

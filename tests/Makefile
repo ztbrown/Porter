@@ -1,5 +1,5 @@
 TARGET = test_suite
-SRCS = ../src/daemonize.c ../src/create_socket.c
+SRCS = ../src/daemonize.c ../src/create_socket.c ../src/bind_socket.c
 TESTS = ./*_test.c
 
 all:

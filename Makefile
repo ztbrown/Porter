@@ -5,4 +5,4 @@ all:
 	$(MAKE) -C src
 
 check:
-	$(MAKE) -C tests
+	docker run -it --rm -P -v $(CURDIR):/code -w="/code" lib-check /bin/sh -c "export CK_FORK=no && make -C tests && ./tests/test_suite"

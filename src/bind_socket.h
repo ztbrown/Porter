@@ -1,9 +1,8 @@
 #ifndef BIND_SOCKET_H
 #define BIND_SOCKET_H
 
-#include <netinet/in.h>
-#include <sys/socket.h>
+#include <netdb.h>
 
-void bind_socket(struct sockaddr_in *address, int current_socket, int port);
+void bind_socket(int current_socket, struct addrinfo *addr_info);
 
 #endif // BIND_SOCKET_H

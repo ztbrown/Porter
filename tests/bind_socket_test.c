@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include <sys/types.h>
+#include <sys/socket.h>
+
 #include "../lib/mock.h"
 #include "../src/bind_socket.h"
 #include "bind_socket_test.h"
@@ -32,35 +35,20 @@ static void teardown()
     mock_reset_call_count(&bind_mock);
 }
 
-START_TEST(it_sets_socket_internet_family_address_and_port)
-{
-    // Arrange
-    struct sockaddr_in address = {0};
-
-    // convert port to network short (Big Endian)
-    int expected_port = htons(80);
-
-    // Act
-    bind_socket(&address, 0, 80);
-
-    // Assert
-
-    ck_assert_int_eq(address.sin_family, AF_INET);
-    ck_assert_int_eq(address.sin_addr.s_addr, INADDR_ANY);
-    ck_assert_int_eq(address.sin_port, expected_port);
-}
-END_TEST
-
 START_TEST(it_binds_the_socket)
 {
     // Arrange
     struct sockaddr_in address = {0};
     int expected_socket = 4;
+    struct addrinfo addr_info = {
+        .ai_addr = (struct sockaddr *)&address,
+        .ai_addrlen = sizeof(address)
+    };
 
     mock_set_callback(&bind_mock, &bind_callback);
 
     // Act
-    bind_socket(&address, expected_socket, 80);
+    bind_socket(expected_socket, &addr_info);
 
     // Assert
     ck_assert_int_eq(mock_get_call_count(&bind_mock), 1);
@@ -80,7 +68,6 @@ Suite *make_bind_socket_test_suite(void)
 
     tcase_add_checked_fixture(tc, &setup, &teardown);
 
-    tcase_add_test(tc, it_sets_socket_internet_family_address_and_port);
     tcase_add_test(tc, it_binds_the_socket);
     suite_add_tcase(s, tc);
 

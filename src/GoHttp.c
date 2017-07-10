@@ -7,6 +7,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <netdb.h>
+
 #include "daemonize.h"
 #include "create_socket.h"
 #include "bind_socket.h"
@@ -27,11 +29,15 @@ int current_socket;
 int connecting_socket;
 socklen_t addr_size;
 
+struct addrinfo *res;
+
 void start()
 {
-	create_socket(&current_socket);
+    get_network_info(&res, port);
 
-	bind_socket(&address, current_socket, port);
+	create_socket(&current_socket, res);
+
+	bind_socket(current_socket, res);
 
 	startListener(current_socket);
 
@@ -60,7 +66,7 @@ int main(int argc, char* argv[])
 
 		// If flag -d is used, set run_daemon to TRUE;
 		else if (strcmp(argv[parameterCount], "-d") == 0)
-		{ 
+		{
 			printf("Setting run_daemon = TRUE");
 			run_daemon = TRUE;
 		}

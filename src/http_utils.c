@@ -262,7 +262,7 @@ int checkMime(char *extension, char *mime_type)
     return 0;
 }
 
-int Content_Lenght(FILE *fp)
+int Content_Length(FILE *fp)
 {
     int filesize = 0;
 
@@ -437,7 +437,7 @@ int handleHttpGET(char *input, int connecting_socket)
 
 
             // Calculate Content Length //
-            contentLength = Content_Lenght(fp);
+            contentLength = Content_Length(fp);
             if (contentLength  < 0 )
             {
                 printf("File size is zero");
@@ -513,7 +513,7 @@ static int receive(int socket)
 /**
   Handles the current connector
  **/
-static void handle(int socket)
+void handle(int socket)
 {
     // --- Workflow --- //
     // 1. Receive ( recv() ) the GET / HEAD
@@ -528,20 +528,4 @@ static void handle(int socket)
     }
 }
 
-void accept_connection(int *current_socket, int *connecting_socket, socklen_t *addr_size, struct sockaddr_storage *connector)
-{
-    *addr_size = sizeof(*connector);
 
-    *connecting_socket = accept(*current_socket, (struct sockaddr *)connector, addr_size);
-
-
-    if ( *connecting_socket < 0 )
-    {
-        perror("Accepting sockets");
-        exit(-1);
-    }
-
-    handle(*connecting_socket);
-
-    close(*connecting_socket);
-}

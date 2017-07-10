@@ -11,5 +11,6 @@ char *mime_file;
 void init(int run_daemon, int *port, char **conf_file, char **log_file);
 void accept_connection(int *current_socket, int *connecting_socket, socklen_t *addr_size, struct sockaddr_storage *connector); 
 void startListener(int current_socket);
+void handle(int connecting_socket);
 
 #endif // HTTP_UTILS_H

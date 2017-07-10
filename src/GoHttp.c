@@ -6,6 +6,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 #include <netdb.h>
 
@@ -44,7 +45,11 @@ void start()
 	while ( 1 )
 	{
         accept_connection(&current_socket, &connecting_socket, &addr_size, &connector);
-	}
+
+	    handle(connecting_socket);
+
+        close(connecting_socket);
+    }
 }
 
 int main(int argc, char* argv[])

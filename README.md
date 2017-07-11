@@ -2,7 +2,7 @@
 
 Porter
 ======
-Porter is a simple web server written in C for educational purposes. This web server runs on GNU/Linux.
+Porter is a simple web server written in C. This web server runs on GNU/Linux.
 
 ## What is it?
 This web server is far from complete. The plan is to modularize [GoHttp](https://github.com/fekberg/GoHttp), write tests, add features and eventually produce a small library that can be included in future projects. 
@@ -37,6 +37,6 @@ You can open httpd.conf and change the following:
 	port 7000
 
 # Credit
-This project was originally forked from [GoHttp](https://github.com/fekberg/GoHttp), a really great resource. 
+This project was originally forked from [GoHttp](https://github.com/fekberg/GoHttp), a really great resource. I also spent a lot of time reading [Beej's Guide to Network Programming](http://beej.us/guide/bgnet/). 
 
 From fekberg: "If it weren't for the course in Advance UNIX Programming that I took at Blekinge Institute of Technology I would never have written this. It all originated from a question on [StackOverflow](http://stackoverflow.com/questions/409087/creating-a-web-server-in-pure-c) from 2009 where I asked for information on how to write a simple web server in C."

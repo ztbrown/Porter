@@ -106,18 +106,6 @@ int GetExtension(char *input, char *output, int max)
     return -1;
 }
 
-/**
-  Start listening for connections and accept no more than MAX_CONNECTIONS in the Quee
- **/
-void startListener(int current_socket)
-{
-    if ( listen(current_socket, MAX_CONNECTIONS) < 0 )
-    {
-        perror("Listen on port");
-        exit(-1);
-    }
-}
-
 void init(int run_daemon, int *port, char **conf_file, char **log_file)
 {
     FILE *filePointer = NULL;

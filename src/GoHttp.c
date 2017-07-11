@@ -12,6 +12,7 @@
 
 #include "daemonize.h"
 #include "create_socket.h"
+#include "accept_connections.h"
 #include "bind_socket.h"
 #include "http_utils.h"
 
@@ -40,7 +41,7 @@ void start()
 
 	bind_socket(current_socket, res);
 
-	startListener(current_socket);
+	start_listener(current_socket);
 
 	while ( 1 )
 	{

@@ -1,14 +1,14 @@
 ![status badge](https://travis-ci.org/ztbrown/GoHttp.svg?branch=master)
 
-GoHttp
+Porter
 ======
-This is a fork of GoHttp, a simple web server written in C for educational purposes. This web server runs on GNU/Linux.
+Porter is a simple web server written in C for educational purposes. This web server runs on GNU/Linux.
 
 ## What is it?
-This web server is far from complete. The plan is to produce a small library that can be included in future projects. 
+This web server is far from complete. The plan is to modularize [GoHttp](https://github.com/fekberg/GoHttp), write tests, add features and eventually produce a small library that can be included in future projects. 
 
 ## What are its capabilities?
-It currently supports GET and HEAD so you can use it to receive any files that correspond with the mime types in mime.types. 
+It currently supports GET so you can use it to receive any files that correspond with the mime types in mime.types. 
 
 ## Prerequisites
 - gcc

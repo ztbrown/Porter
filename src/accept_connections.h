@@ -9,6 +9,4 @@ void accept_connection(int *current_socket, int *connecting_socket, socklen_t *a
 
 void handle_connection(int current_socket);
 
-int receive(int connecting_socket);
-
 #endif // ACCEPT_CONNECTIONS_H

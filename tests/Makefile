@@ -6,7 +6,7 @@ TESTS = $(wildcard ./*_test.c)
 SRC_OBJS = $(SRCS:.c=.o)
 TEST_OBJS = $(TESTS:.c=.o)
 
-all: $(TEST_OBJS) $(SRC_OBJS)
+all: $(SRC_OBJS) $(TEST_OBJS)
 	gcc $(CFLAGS) $^ test_suite.c -o $(TARGET) ../lib/libmock.a `pkg-config --cflags --libs check` `cat $(TESTS) | ../bin/generate_mock_linker_flags.sh`
 
 ../src/%.o: ../src/%.c

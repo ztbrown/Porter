@@ -3,7 +3,6 @@
 
 #define TRUE 1
 #define FALSE 0
-#define MAX_CONNECTIONS 3
 
 char *wwwroot;
 char *mime_file;

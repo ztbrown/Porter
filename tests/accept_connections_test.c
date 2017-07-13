@@ -1,5 +1,7 @@
 #include <check.h>
 
+#include "accept_connections_test.h"
+
 #include "../src/http_utils.h"
 #include "../src/accept_connections.h"
 #include "../lib/mock.h"

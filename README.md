@@ -1,4 +1,4 @@
-![status badge](https://travis-ci.org/ztbrown/porter.svg?branch=master)
+![status badge](https://travis-ci.org/ztbrown/Porter.svg?branch=master)
 
 Porter
 ======

@@ -6,11 +6,13 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 #include <netdb.h>
 
 #include "daemonize.h"
 #include "create_socket.h"
+#include "accept_connections.h"
 #include "bind_socket.h"
 #include "http_utils.h"
 
@@ -33,18 +35,28 @@ struct addrinfo *res;
 
 void start()
 {
+    int pid;
+
     get_network_info(&res, port);
 
 	create_socket(&current_socket, res);
 
 	bind_socket(current_socket, res);
 
-	startListener(current_socket);
+	start_listener(current_socket);
 
 	while ( 1 )
 	{
         accept_connection(&current_socket, &connecting_socket, &addr_size, &connector);
-	}
+
+        pid = fork();
+        if (pid == 0)
+        {
+	        handle_connection(connecting_socket);
+
+            exit(EXIT_SUCCESS);
+        }
+    }
 }
 
 int main(int argc, char* argv[])

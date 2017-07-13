@@ -7,8 +7,6 @@
 
 #include "http_utils.h"
 
-#define BUFFER_SIZE 512
-
 int scan(char *input, char *output, int start, int max)
 {
     if ( start >= strlen(input) )
@@ -462,58 +460,4 @@ int handleHttpGET(char *input, int connecting_socket)
 
     return -1;
 }
-
-static int receive(int socket)
-{
-    int msgLen = 0;
-    char buffer[BUFFER_SIZE];
-
-    memset (buffer,'\0', BUFFER_SIZE);
-
-    if ((msgLen = recv(socket, buffer, BUFFER_SIZE, 0)) == -1)
-    {
-        printf("Error handling incoming request");
-        return -1;
-    }
-
-    int request = getRequestType(buffer);
-
-    if ( request == 1 )				// GET
-    {
-        handleHttpGET(buffer, socket);
-    }
-    else if ( request == 2 )		// HEAD
-    {
-        // SendHeader();
-    }
-    else if ( request == 0 )		// POST
-    {
-        sendString("501 Not Implemented\n", socket);
-    }
-    else							// GARBAGE
-    {
-        sendString("400 Bad Request\n", socket);
-    }
-
-    return 1;
-}
-
-/**
-  Handles the current connector
- **/
-void handle(int socket)
-{
-    // --- Workflow --- //
-    // 1. Receive ( recv() ) the GET / HEAD
-    // 2. Process the request and see if the file exists
-    // 3. Read the file content
-    // 4. Send out with correct mine and http 1.1
-
-    if (receive((int)socket) < 0)
-    {
-        perror("Receive");
-        exit(-1);
-    }
-}
-
 

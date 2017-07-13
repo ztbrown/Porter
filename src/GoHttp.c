@@ -35,6 +35,8 @@ struct addrinfo *res;
 
 void start()
 {
+    int pid;
+
     get_network_info(&res, port);
 
 	create_socket(&current_socket, res);
@@ -47,9 +49,13 @@ void start()
 	{
         accept_connection(&current_socket, &connecting_socket, &addr_size, &connector);
 
-	    handle(connecting_socket);
+        pid = fork();
+        if (pid == 0)
+        {
+	        handle_connection(connecting_socket);
 
-        close(connecting_socket);
+            exit(EXIT_SUCCESS);
+        }
     }
 }
 

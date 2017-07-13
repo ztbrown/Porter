@@ -1,6 +1,13 @@
 TARGET = test_suite
-SRCS = ../src/accept_connections.c ../src/http_utils.c ../src/daemonize.c ../src/create_socket.c ../src/bind_socket.c
-TESTS = ./*_test.c
+TMP = $(wildcard ../src/*.c)
+SRCS = $(filter-out ../src/GoHttp.c, $(TMP))
+TESTS = $(wildcard ./*_test.c)
 
-all:
-	gcc $(CFLAGS) $(SRCS) $(TESTS) test_suite.c -o $(TARGET) ../lib/libmock.a `pkg-config --cflags --libs check` `cat $(TESTS) | ../bin/generate_mock_linker_flags.sh`
+SRC_OBJS = $(SRCS:.c=.o)
+TEST_OBJS = $(TESTS:.c=.o)
+
+all: $(TEST_OBJS) $(SRC_OBJS)
+	gcc $(CFLAGS) $^ test_suite.c -o $(TARGET) ../lib/libmock.a `pkg-config --cflags --libs check` `cat $(TESTS) | ../bin/generate_mock_linker_flags.sh`
+
+../src/%.o: ../src/%.c
+	$(CC) $(CFLAGS) -c -o $@ $<

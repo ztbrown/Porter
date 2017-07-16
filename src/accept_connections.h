@@ -1,6 +1,7 @@
 #ifndef ACCEPT_CONNECTIONS_H
 #define ACCEPT_CONNECTIONS_H
 
+#include <sys/types.h>
 #include <sys/socket.h>
 
 void start_listener(int current_socket);

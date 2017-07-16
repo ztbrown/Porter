@@ -9,6 +9,7 @@
 #include "../../src/bind_socket.h"
 #include "bind_socket_test.h"
 
+SIMULACRUM(void, exit, 1, int)
 SIMULACRUM(void, bind, 3, int, struct sockaddr *, size_t)
 struct bind_args_s
 {

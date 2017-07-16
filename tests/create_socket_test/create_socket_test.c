@@ -10,6 +10,7 @@
 
 SIMULACRUM(int, socket, 3, int, int, int)
 SIMULACRUM(void, perror, 1, char*)
+SIMULACRUM(void, exit, 1, int)
 
 static struct addrinfo socket_argument_captor;
 static void socket_callback(int family, int socktype, int protocol)

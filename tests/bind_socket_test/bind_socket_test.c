@@ -5,8 +5,8 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 
-#include "../lib/mock.h"
-#include "../src/bind_socket.h"
+#include "../../lib/mock.h"
+#include "../../src/bind_socket.h"
 #include "bind_socket_test.h"
 
 SIMULACRUM(void, bind, 3, int, struct sockaddr *, size_t)

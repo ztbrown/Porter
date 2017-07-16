@@ -4,8 +4,8 @@
 
 #include <netdb.h>
 
-#include "../lib/mock.h"
-#include "../src/create_socket.h"
+#include "../../lib/mock.h"
+#include "../../src/create_socket.h"
 #include "create_socket_test.h"
 
 SIMULACRUM(int, socket, 3, int, int, int)

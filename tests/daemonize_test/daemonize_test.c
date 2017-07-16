@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "../lib/mock.h"
-#include "../src/daemonize.h"
+#include "../../lib/mock.h"
+#include "../../src/daemonize.h"
 #include "daemonize_test.h"
 
 SIMULACRUM(int, getppid, 0)

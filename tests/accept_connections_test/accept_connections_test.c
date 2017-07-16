@@ -2,9 +2,9 @@
 
 #include "accept_connections_test.h"
 
-#include "../src/http_utils.h"
-#include "../src/accept_connections.h"
-#include "../lib/mock.h"
+#include "../../src/http_utils.h"
+#include "../../src/accept_connections.h"
+#include "../../lib/mock.h"
 
 SIMULACRUM(int, accept, 3, int, struct sockaddr *, socklen_t *)
 SIMULACRUM(void, close, 1, int)

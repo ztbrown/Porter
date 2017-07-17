@@ -1,3 +1,4 @@
+#include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/socket.h>
@@ -34,16 +35,15 @@ void accept_connection(int *current_socket, int *connecting_socket, socklen_t *a
 
 void handle_connection(int connecting_socket)
 {
-    // --- Workflow --- //
-    // 1. Receive ( recv() ) the GET / HEAD
-    // 2. Process the request and see if the file exists
-    // 3. Read the file content
-    // 4. Send out with correct mine and http 1.1
-
-    if (receive((int)connecting_socket) < 0)
+    if (!fork())
     {
-        perror("Receive");
-        exit(-1);
+        if (receive((int)connecting_socket) < 0)
+        {
+            perror("Receive");
+            exit(-1);
+        }
+        close(connecting_socket);
+        exit(EXIT_SUCCESS);
     }
 
     close(connecting_socket);

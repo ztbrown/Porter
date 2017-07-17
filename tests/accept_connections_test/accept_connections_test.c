@@ -10,9 +10,13 @@ SIMULACRUM(int, accept, 3, int, struct sockaddr *, socklen_t *)
 SIMULACRUM(void, close, 1, int)
 SIMULACRUM(int, receive, 1, int)
 SIMULACRUM(void, listen, 1, int)
+SIMULACRUM(void, fork, 0)
+SIMULACRUM(void, exit, 1, int)
 
 static void setup()
 {
+    int success = 0;
+    mock_set_return_value(&fork_mock, &success);
 }
 
 static void teardown()
@@ -21,6 +25,8 @@ static void teardown()
     mock_reset_call_count(&close_mock);
     mock_reset_call_count(&listen_mock);
     mock_reset_call_count(&receive_mock);
+    mock_reset_call_count(&exit_mock);
+    mock_reset_call_count(&fork_mock);
 }
 
 START_TEST(it_calls_accept_and_sets_the_connecting_socket)
@@ -39,7 +45,7 @@ START_TEST(it_calls_accept_and_sets_the_connecting_socket)
     accept_connection(&current_socket, &connecting_socket, &addr_size, &connector);
 
     // Assert
-    ck_assert_int_eq(mock_get_call_count(&accept_mock), 1); 
+    ck_assert_int_eq(mock_get_call_count(&accept_mock), 1);
     ck_assert_int_eq(connecting_socket, mock_rtn_val);
 }
 END_TEST
@@ -72,6 +78,35 @@ START_TEST(it_handles_the_connecting_socket_and_calls_receive)
 }
 END_TEST
 
+START_TEST(handle_connection_forks_to_child_process_after_accepting_new_connection)
+{
+    // Arrange
+    int connecting_socket = 0;
+
+    // Act
+    handle_connection(connecting_socket);
+
+    // Assert
+    ck_assert_int_eq(mock_get_call_count(&fork_mock), 1);
+}
+END_TEST
+
+START_TEST(handle_connection_parent_process_closes_connecting_socket)
+{
+    // Arrange
+    int connecting_socket = 0;
+    int fork_rtn_parent = 1;
+    mock_set_return_value(&fork_mock, &fork_rtn_parent);
+
+    // Act
+    handle_connection(connecting_socket);
+
+    // Assert
+    ck_assert_int_eq(mock_get_call_count(&fork_mock), 1);
+    ck_assert_int_eq(mock_get_call_count(&close_mock), 1);
+}
+END_TEST
+
 Suite *make_accept_connections_test_suite()
 {
     Suite *s;
@@ -85,6 +120,7 @@ Suite *make_accept_connections_test_suite()
     tcase_add_test(tc, it_calls_accept_and_sets_the_connecting_socket);
     tcase_add_test(tc, start_listener_calls_listen_with_current_socket_and_max_conn);
     tcase_add_test(tc, it_handles_the_connecting_socket_and_calls_receive);
+    tcase_add_test(tc, handle_connection_forks_to_child_process_after_accepting_new_connection);
 
     suite_add_tcase(s, tc);
 

@@ -1,14 +1,11 @@
-//
-// GoHttp is purely written for educational purposes
-// DO NOT USE IN PRODUCTION!
-//
-
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 
 #include <netdb.h>
+#include <signal.h>
+#include <errno.h>
 
 #include "daemonize.h"
 #include "create_socket.h"

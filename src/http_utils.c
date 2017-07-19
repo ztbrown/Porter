@@ -176,7 +176,7 @@ int getRequestType(char *input)
     {
         type = 2;
     }
-    else if (strlen(input) > 4 && strcmp("POST", requestType) == 0 )
+    else if (strlen(input) >= 4 && strcmp("POST", requestType) == 0 )
     {
         type = 0;
     }

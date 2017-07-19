@@ -10,7 +10,7 @@
 #include "bind_socket_test.h"
 
 SIMULACRUM(void, exit, 1, int)
-SIMULACRUM(void, bind, 3, int, struct sockaddr *, size_t)
+SIMULACRUM(int, bind, 3, int, struct sockaddr *, size_t)
 struct bind_args_s
 {
     int socket;
@@ -45,7 +45,9 @@ START_TEST(it_binds_the_socket)
         .ai_addr = (struct sockaddr *)&address,
         .ai_addrlen = sizeof(address)
     };
+    int success = 0;
 
+    mock_set_return_value(&bind_mock, &success);
     mock_set_callback(&bind_mock, &bind_callback);
 
     // Act

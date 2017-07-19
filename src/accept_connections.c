@@ -9,7 +9,7 @@
 #include <sys/wait.h>
 
 #include "accept_connections.h"
-#include "handle_connections.h"
+#include "receive_connections.h"
 #include "http_utils.h"
 
 #define MAX_CONNECTIONS 10

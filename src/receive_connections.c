@@ -4,7 +4,7 @@
 #include <unistd.h>
 #include <string.h>
 
-#include "handle_connections.h"
+#include "receive_connections.h"
 #include "http_utils.h"
 
 #define BUFFER_SIZE 512

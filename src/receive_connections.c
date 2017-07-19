@@ -34,11 +34,11 @@ int receive(int connecting_socket)
     }
     else if ( request == 0 )		// POST
     {
-        sendString("501 Not Implemented\n", connecting_socket);
+        send_string("501 Not Implemented\n", connecting_socket);
     }
     else							// GARBAGE
     {
-        sendString("400 Bad Request\n", connecting_socket);
+        send_string("400 Bad Request\n", connecting_socket);
     }
 
     return 1;

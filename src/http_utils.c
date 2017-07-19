@@ -187,7 +187,7 @@ int getRequestType(char *input)
     return type;
 }
 
-int sendString(char *message, int socket)
+int send_string(char *message, int socket)
 {
     int length, bytes_sent;
     length = strlen(message);
@@ -305,7 +305,7 @@ void sendHeader(char *Status_code, char *Content_Type, int TotalSize, int socket
         strcat(message, (char*)ctime(&rawtime));
         strcat(message, newline);
 
-        sendString(message, socket);
+        send_string(message, socket);
 
         free(message);
     }
@@ -372,7 +372,7 @@ int handleHttpGET(char *input, int connecting_socket)
             {
                 printf("File extension not existing");
 
-                sendString("400 Bad Request\n", connecting_socket);
+                send_string("400 Bad Request\n", connecting_socket);
 
                 free(filename);
                 free(mime);
@@ -389,7 +389,7 @@ int handleHttpGET(char *input, int connecting_socket)
             {
                 printf("Mime not supported");
 
-                sendString("400 Bad Request\n", connecting_socket);
+                send_string("400 Bad Request\n", connecting_socket);
 
                 free(filename);
                 free(mime);
@@ -411,7 +411,7 @@ int handleHttpGET(char *input, int connecting_socket)
             {
                 printf("Unable to open file");
 
-                sendString("404 Not Found\n", connecting_socket);
+                send_string("404 Not Found\n", connecting_socket);
 
                 free(filename);
                 free(mime);
@@ -454,7 +454,7 @@ int handleHttpGET(char *input, int connecting_socket)
         }
         else
         {
-            sendString("501 Not Implemented\n", connecting_socket);
+            send_string("501 Not Implemented\n", connecting_socket);
         }
     }
 

@@ -11,7 +11,7 @@
 SIMULACRUM(int, recv, 4, int, char*, int, int)
 SIMULACRUM(int, getRequestType, 1, char*)
 SIMULACRUM(void, handleHttpGET, 2, char*, int)
-SIMULACRUM(void, sendString, 2, char*, int)
+SIMULACRUM(void, send_string, 2, char*, int)
 
 static void setup()
 {
@@ -26,7 +26,7 @@ static void teardown()
     mock_reset_call_count(&recv_mock);
     mock_reset_call_count(&getRequestType_mock);
     mock_reset_call_count(&handleHttpGET_mock);
-    mock_reset_call_count(&sendString_mock);
+    mock_reset_call_count(&send_string_mock);
 }
 
 struct send_string_args_s {
@@ -35,7 +35,7 @@ struct send_string_args_s {
 };
 struct send_string_args_s send_string_args;
 
-void sendString_callback(char * msg, int socket)
+void send_string_callback(char * msg, int socket)
 {
     send_string_args.msg = malloc(strlen(msg) + 1);
     memcpy(send_string_args.msg, msg, strlen(msg) + 1);
@@ -79,13 +79,13 @@ START_TEST(it_responds_to_POST_with_not_implemented)
     int request_type = 0;
 
     mock_set_return_value(&getRequestType_mock, &request_type);
-    mock_set_callback(&sendString_mock, &sendString_callback);
+    mock_set_callback(&send_string_mock, &send_string_callback);
 
     // Act
     receive(connecting_socket);
 
     // Assert
-    ck_assert_int_eq(mock_get_call_count(&sendString_mock), 1);
+    ck_assert_int_eq(mock_get_call_count(&send_string_mock), 1);
     ck_assert_int_eq(send_string_args.connecting_socket, 0);
     ck_assert_str_eq(send_string_args.msg, "501 Not Implemented\n");
 
@@ -101,13 +101,13 @@ START_TEST(it_returns_bad_request_otherwise)
     int request_type = -1;
 
     mock_set_return_value(&getRequestType_mock, &request_type);
-    mock_set_callback(&sendString_mock, &sendString_callback);
+    mock_set_callback(&send_string_mock, &send_string_callback);
 
     // Act
     receive(connecting_socket);
 
     // Assert
-    ck_assert_int_eq(mock_get_call_count(&sendString_mock), 1);
+    ck_assert_int_eq(mock_get_call_count(&send_string_mock), 1);
     ck_assert_int_eq(send_string_args.connecting_socket, 0);
     ck_assert_str_eq(send_string_args.msg, "400 Bad Request\n");
 }

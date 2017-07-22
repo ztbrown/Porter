@@ -259,7 +259,7 @@ int Content_Length(FILE *fp)
     return filesize;
 }
 
-void sendHeader(char *Status_code, char *Content_Type, int TotalSize, int socket)
+void send_header(char *status_code, char *content_type, int total_size, int socket)
 {
     char *head = "\r\nHTTP/1.1 ";
     char *content_head = "\r\nContent-Type: ";
@@ -274,7 +274,7 @@ void sendHeader(char *Status_code, char *Content_Type, int TotalSize, int socket
     time ( &rawtime );
 
     // int contentLength = strlen(HTML);
-    sprintf(contentLength, "%i", TotalSize);
+    sprintf(contentLength, "%i", total_size);
 
     char *message = malloc((
                 strlen(head) +
@@ -283,8 +283,8 @@ void sendHeader(char *Status_code, char *Content_Type, int TotalSize, int socket
                 strlen(length_head) +
                 strlen(date_head) +
                 strlen(newline) +
-                strlen(Status_code) +
-                strlen(Content_Type) +
+                strlen(status_code) +
+                strlen(content_type) +
                 strlen(contentLength) +
                 28 +
                 sizeof(char)) * 2);
@@ -294,10 +294,10 @@ void sendHeader(char *Status_code, char *Content_Type, int TotalSize, int socket
 
         strcpy(message, head);
 
-        strcat(message, Status_code);
+        strcat(message, status_code);
 
         strcat(message, content_head);
-        strcat(message, Content_Type);
+        strcat(message, content_type);
         strcat(message, server_head);
         strcat(message, length_head);
         strcat(message, contentLength);
@@ -439,7 +439,7 @@ int handleHttpGET(char *input, int connecting_socket)
             }
 
             // Send File Content //
-            sendHeader("200 OK", mime,contentLength, connecting_socket);
+            send_header("200 OK", mime,contentLength, connecting_socket);
 
             sendFile(fp, contentLength, connecting_socket);
 

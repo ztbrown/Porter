@@ -118,6 +118,51 @@ START_TEST(it_sends_string_over_connecting_socket)
 }
 END_TEST
 
+// send_header
+
+START_TEST(it_properly_formats_the_200_http_response_header)
+{
+    // Arrange
+    char *response = "200 OK";
+    char *mime = "text/html";
+    char *expected = "\r\nHTTP/1.1 200 OK";
+                     "\r\nContent-Type: text/html"
+                     "\r\nServer: PT06"
+                     "\r\nContent-Length: 1337"
+                     "\r\nDate: ";
+    int header_len = strlen(expected);
+
+    // Act
+    send_header(response, mime, 1337, 0);
+
+    // Assert
+    ck_assert_int_eq(mock_get_call_count(&send_mock), 1);
+    send_args.message[header_len] = '\0';
+    ck_assert_str_eq(send_args.message, expected);
+}
+END_TEST
+
+START_TEST(it_properly_formats_the_400_http_response_header)
+{
+    // Arrange
+    char *response = "400 Bad Request";
+    char *mime = "text/html";
+    char *expected = "\r\nHTTP/1.1 400 Bad Request";
+                     "\r\nContent-Type: text/html"
+                     "\r\nServer: PT06"
+                     "\r\nContent-Length: 1337"
+                     "\r\nDate: ";
+    int header_len = strlen(expected);
+
+    // Act
+    send_header(response, mime, 1337, 0);
+
+    // Assert
+    ck_assert_int_eq(mock_get_call_count(&send_mock), 1);
+    send_args.message[header_len] = '\0';
+    ck_assert_str_eq(send_args.message, expected);
+}
+END_TEST
 
 Suite *make_http_utils_test_suite()
 {
@@ -140,6 +185,14 @@ Suite *make_http_utils_test_suite()
     tcase_add_checked_fixture(tc, &setup, &teardown);
 
     tcase_add_test(tc, it_sends_string_over_connecting_socket);
+
+    suite_add_tcase(s, tc);
+
+    tc = tcase_create("send_header");
+    tcase_add_checked_fixture(tc, &setup, &teardown);
+
+    tcase_add_test(tc, it_properly_formats_the_200_http_response_header);
+    tcase_add_test(tc, it_properly_formats_the_400_http_response_header);
 
     suite_add_tcase(s, tc);
 

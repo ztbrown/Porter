@@ -10,7 +10,7 @@
 
 SIMULACRUM(int, recv, 4, int, char*, int, int)
 SIMULACRUM(int, getRequestType, 1, char*)
-SIMULACRUM(void, handleHttpGET, 2, char*, int)
+SIMULACRUM(void, handle_http_get, 2, char*, int)
 SIMULACRUM(void, send_string, 2, char*, int)
 
 static void setup()
@@ -25,7 +25,7 @@ static void teardown()
 {
     mock_reset_call_count(&recv_mock);
     mock_reset_call_count(&getRequestType_mock);
-    mock_reset_call_count(&handleHttpGET_mock);
+    mock_reset_call_count(&handle_http_get_mock);
     mock_reset_call_count(&send_string_mock);
 }
 
@@ -67,7 +67,7 @@ START_TEST(it_handles_http_get)
     receive(connecting_socket);
 
     // Assert
-    ck_assert_int_eq(mock_get_call_count(&handleHttpGET_mock), 1);
+    ck_assert_int_eq(mock_get_call_count(&handle_http_get_mock), 1);
 
 }
 END_TEST

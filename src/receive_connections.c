@@ -26,7 +26,7 @@ int receive(int connecting_socket)
 
     if ( request == 1 )				// GET
     {
-        handleHttpGET(buffer, connecting_socket);
+        handle_http_get(buffer, connecting_socket);
     }
     else if ( request == 2 )		// HEAD
     {

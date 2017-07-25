@@ -33,16 +33,7 @@ int scan(char *input, char *output, int start, int max)
     }
     *(output + appending_char_count) = '\0';
 
-    // Find next word start
-    i += 1;
-
-    for (; i < strlen(input); i ++ )
-    {
-        if ( *(input + i ) != '\t' && *(input + i) != ' ' && *(input + i) != '\n' && *(input + i) != '\r')
-            break;
-    }
-
-    return i;
+    return strlen(output);
 }
 
 int getHttpVersion(char *input, char *output)
@@ -334,7 +325,7 @@ void sendFile(FILE *fp, int file_size, int connecting_socket)
     while(current_char != EOF);
 }
 
-int handleHttpGET(char *input, int connecting_socket)
+int handle_http_get(char *input, int connecting_socket)
 {
     // IF NOT EXISTS
     // RETURN -1
@@ -383,7 +374,6 @@ int handleHttpGET(char *input, int connecting_socket)
             }
 
             mimeSupported =  checkMime(extension, mime);
-
 
             if ( mimeSupported != 1)
             {

@@ -164,6 +164,24 @@ START_TEST(it_properly_formats_the_400_http_response_header)
 }
 END_TEST
 
+// scan 
+
+START_TEST(it_makes_do)
+{
+    // Arrange
+    char *input = "GET /index.html HTTP/1.1";
+    char output[200];
+    int filename_length;
+
+    // Act
+    filename_length = scan(input, output, 5, 200);
+
+    // Assert
+    ck_assert_int_eq(filename_length, 10);
+    ck_assert_str_eq(output, "index.html");
+}
+END_TEST
+
 Suite *make_http_utils_test_suite()
 {
     Suite *s;
@@ -193,6 +211,13 @@ Suite *make_http_utils_test_suite()
 
     tcase_add_test(tc, it_properly_formats_the_200_http_response_header);
     tcase_add_test(tc, it_properly_formats_the_400_http_response_header);
+
+    suite_add_tcase(s, tc);
+
+    tc = tcase_create("scan");
+    tcase_add_checked_fixture(tc, &setup, &teardown);
+
+    tcase_add_test(tc, it_makes_do);
 
     suite_add_tcase(s, tc);
 

@@ -32,11 +32,16 @@ int scan(char *input, char *output, int start, int max)
             break;
     }
     *(output + appending_char_count) = '\0';
+    for (; i < strlen(input); i ++ )
+    {
+        if ( *(input + i ) != '\t' && *(input + i) != ' ' && *(input + i) != '\n' && *(input + i) != '\r')
+            break;
+    }
 
-    return strlen(output);
+    return i;
 }
 
-int getHttpVersion(char *input, char *output)
+int get_http_version(char *input, char *output)
 {
     char *filename = malloc(100);
     int start = scan(input, filename, 4, 100);
@@ -188,20 +193,14 @@ int send_string(char *message, int socket)
     return bytes_sent;
 }
 
-int checkMime(char *extension, char *mime_type)
+int check_mime(char *extension, char *mime_type)
 {
     char *current_word = malloc(600);
     char *word_holder = malloc(600);
     char *line = malloc(200);
     int startline = 0;
-
+    
     FILE *mimeFile = fopen(mime_file, "r");
-
-    free(mime_type);
-
-    mime_type = (char*)malloc(200);
-
-    memset (mime_type,'\0',200);
 
     while(fgets(line, 200, mimeFile) != NULL) {
 
@@ -231,7 +230,6 @@ int checkMime(char *extension, char *mime_type)
 
         memset (line,'\0',200);
     }
-
     free(current_word);
     free(word_holder);
     free(line);
@@ -342,7 +340,6 @@ int handle_http_get(char *input, int connecting_socket)
     int mimeSupported = 0;
     int fileNameLenght = 0;
 
-
     memset(path, '\0', 1000);
     memset(filename, '\0', 200);
     memset(extension, '\0', 10);
@@ -351,11 +348,10 @@ int handle_http_get(char *input, int connecting_socket)
 
     fileNameLenght = scan(input, filename, 5, 200);
 
-
     if ( fileNameLenght > 0 )
     {
 
-        if ( getHttpVersion(input, httpVersion) != -1 )
+        if ( get_http_version(input, httpVersion) != -1 )
         {
             FILE *fp;
 
@@ -373,7 +369,7 @@ int handle_http_get(char *input, int connecting_socket)
                 return -1;
             }
 
-            mimeSupported =  checkMime(extension, mime);
+            mimeSupported =  check_mime(extension, mime);
 
             if ( mimeSupported != 1)
             {

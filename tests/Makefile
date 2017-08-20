@@ -5,3 +5,10 @@ all: $(TEST_SUITES)
 		make -C $$a; \
 	done;
 
+clean: $(TEST_SUITES)
+	@for a in $^; do 			\
+		cd $$a;		   			\
+		rm -rf *.o test_suite;  \
+		cd -;		 			\
+	done;
+

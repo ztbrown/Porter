@@ -11,4 +11,4 @@ run-suite: clean
 	docker run -it --rm -P -v $(CURDIR):/code -w="/code/tests" lib-check /bin/sh -c "export CK_FORK=no && make -C $(SUITE)"
 
 clean:
-	rm -rf **/*.o tests/test_suite
+	rm -rf **/*.o && $(MAKE) clean -C tests

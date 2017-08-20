@@ -40,7 +40,7 @@ static void teardown()
     mock_reset_call_count(&send_mock);
 }
 
-/*char *fgets_returns[] = {"text/html                  html htm"}; 
+/*char *fgets_returns[] = {"text/html                  html htm"};
 int fgets_callback(char* line, int length, FILE *file)
 {
     int index = mock_get_call_count(&fgets_mock);
@@ -181,21 +181,54 @@ START_TEST(it_properly_formats_the_400_http_response_header)
 }
 END_TEST
 
-// scan 
+// scan
 
-START_TEST(it_scans_text_gets_next_word_and_word_length)
+START_TEST(it_scans_text_gets_next_word)
 {
     // Arrange
     char *input = "GET /index.html HTTP/1.1";
     char output[200];
-    int filename_length;
+    int length;
 
     // Act
-    filename_length = scan(input, output, 5, 200);
+    length = scan(input, output, 5, 200);
 
     // Assert
-    ck_assert_int_eq(filename_length, 11);
+    ck_assert_int_eq(length, 16);
     ck_assert_str_eq(output, "index.html");
+}
+END_TEST
+
+START_TEST(it_gets_next_word_and_returns_length_from_zero_to_word_length_plus_one)
+{
+    // Arrange
+    char *input = "GET /index.html HTTP/1.1 some more stuff";
+    char output[200];
+    int length;
+
+    // Act
+    length = scan(input, output, 25, 200);
+
+    // Assert
+    ck_assert_int_eq(length, 30);
+    ck_assert_str_eq(output, "some");
+}
+END_TEST
+
+START_TEST(it_wont_buffer_overflow)
+{
+    // Arrange
+    char *input = "GET /index.html HTTP/1.1";
+    char output[5];
+    int length;
+
+    // Act
+    length = scan(input, output, 5, 5);
+
+    // Assert
+    ck_assert_int_eq(length, 16);
+    ck_assert_str_eq(output, "inde");
+
 }
 END_TEST
 
@@ -217,7 +250,7 @@ START_TEST(it_checks_mime_type)
     // Assert
     ck_assert_str_eq(mime, "text/html");
 
-    // Clean up 
+    // Clean up
     free(mime_file);
 }
 END_TEST
@@ -234,7 +267,7 @@ Suite *make_http_utils_test_suite()
 
     tcase_add_test(tc, it_gets_request_type_for_GET);
     tcase_add_test(tc, it_gets_request_type_for_HEAD);
-    
+
     tcase_add_test(tc, it_gets_request_type_for_POST);
     tcase_add_test(tc, it_returns_error_code_for_invalid_request);
 
@@ -258,7 +291,9 @@ Suite *make_http_utils_test_suite()
     tc = tcase_create("scan");
     tcase_add_checked_fixture(tc, &setup, &teardown);
 
-    tcase_add_test(tc, it_scans_text_gets_next_word_and_word_length);
+    tcase_add_test(tc, it_scans_text_gets_next_word);
+    tcase_add_test(tc, it_gets_next_word_and_returns_length_from_zero_to_word_length_plus_one);
+    tcase_add_test(tc, it_wont_buffer_overflow);
 
     suite_add_tcase(s, tc);
 

@@ -252,7 +252,7 @@ void send_header(char *status_code, char *content_type, int total_size, int sock
 {
     char *head = "\r\nHTTP/1.1 ";
     char *content_head = "\r\nContent-Type: ";
-    char *server_head = "\r\nServer: PT06";
+    char *server_head = "\r\nServer: porter";
     char *length_head = "\r\nContent-Length: ";
     char *date_head = "\r\nDate: ";
     char *newline = "\r\n";
